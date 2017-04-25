@@ -14,6 +14,7 @@ struct stack * new_stack() {
 
   struct stack *s;
   struct matrix **m;
+
   struct matrix *i;
   s = (struct stack *)malloc(sizeof(struct stack));
   

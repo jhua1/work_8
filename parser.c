@@ -8,6 +8,7 @@
 #include "draw.h"
 #include "matrix.h"
 #include "parser.h"
+#include "stack.h"
 
 
 /*======== void parse_file () ==========
@@ -91,12 +92,19 @@ void parse_file ( char * filename,
     double yvals[4];
     double zvals[4];
     struct matrix *tmp;
+    struct stack *cs;
     double r, r1;
     double theta;
     char axis;
     int type;
     double step = 0.01;
 
+    if ( strncmp(line, "push", strlen(line)) == 0){
+      push(cs);
+    }
+    if ( strncmp(line, "pop", strlen(line)) == 0){
+      pop(cs);
+    }
     if ( strncmp(line, "box", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
       //printf("BOX\t%s", line);
