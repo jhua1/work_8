@@ -92,7 +92,8 @@ void parse_file ( char * filename,
     double yvals[4];
     double zvals[4];
     struct matrix *tmp;
-    struct stack *cs;
+    struct matrix *poly = new_matrix(4,4);
+    struct stack *cs = new_stack();
     double r, r1;
     double theta;
     char axis;
@@ -105,15 +106,17 @@ void parse_file ( char * filename,
     if ( strncmp(line, "pop", strlen(line)) == 0){
       pop(cs);
     }
+    
     if ( strncmp(line, "box", strlen(line)) == 0 ) {
       fgets(line, sizeof(line), f);
       //printf("BOX\t%s", line);
-
       sscanf(line, "%lf %lf %lf %lf %lf %lf",
 	     xvals, yvals, zvals,
 	     xvals+1, yvals+1, zvals+1);
-      add_box(edges, xvals[0], yvals[0], zvals[0],
+      add_box(poly, xvals[0], yvals[0], zvals[0],
 	      xvals[1], yvals[1], zvals[1]);
+      matrix_mult(poly,cs->data[cs->top]);
+      poly->lastcol = 0;
     }//end of box
 
     else if ( strncmp(line, "sphere", strlen(line)) == 0 ) {
@@ -122,7 +125,9 @@ void parse_file ( char * filename,
 
       sscanf(line, "%lf %lf %lf %lf",
 	     xvals, yvals, zvals, &r);
-      add_sphere( edges, xvals[0], yvals[0], zvals[0], r, 0.06);
+      add_sphere( poly, xvals[0], yvals[0], zvals[0], r, 0.06);
+      matrix_mult(poly,cs->data[cs->top]);
+      poly->lastcol = 0;
     }//end of sphere
 
     else if ( strncmp(line, "torus", strlen(line)) == 0 ) {
@@ -189,7 +194,7 @@ void parse_file ( char * filename,
       /* printf("%lf %lf %lf\n", */
       /* 	xvals[0], yvals[0], zvals[0]); */ 
       tmp = make_scale( xvals[0], yvals[0], zvals[0]);
-      matrix_mult(tmp, transform);
+      matrix_mult(cs->data[cs->top], transform);
     }//end scale
 
     else if ( strncmp(line, "move", strlen(line)) == 0 ) {
@@ -200,7 +205,7 @@ void parse_file ( char * filename,
       /* printf("%lf %lf %lf\n", */
       /* 	xvals[0], yvals[0], zvals[0]); */ 
       tmp = make_translate( xvals[0], yvals[0], zvals[0]);
-      matrix_mult(tmp, transform);
+      matrix_mult(cs->data[cs->top], transform);
     }//end translate
 
     else if ( strncmp(line, "rotate", strlen(line)) == 0 ) {
@@ -218,7 +223,7 @@ void parse_file ( char * filename,
       else 
 	tmp = make_rotZ( theta );
       
-      matrix_mult(tmp, transform);
+      matrix_mult(cs->data[cs->top], transform);
     }//end rotate
 
     else if ( strncmp(line, "clear", strlen(line)) == 0 ) {
