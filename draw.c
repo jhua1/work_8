@@ -91,28 +91,26 @@ void add_box( struct matrix * edges,
   y1 = y-height;
   z0 = z;
   z1 = z-depth;
-  add_polygon(edges, x0, y0, z0, x0, y0, z1, x1, y0, z0);
-  add_polygon(edges, x0, y0, z1, x1, y0, z1, x1, y0, z0);
-
+  
   //front
   add_polygon(edges, x0, y0, z0, x1, y0, z0, x1, y1, z0);
   add_polygon(edges, x0, y1, z0, x0, y0, z0, x1, y1, z0);
-
   //right
   add_polygon(edges, x1, y0, z0, x1, y0, z1, x1, y1, z1);
   add_polygon(edges, x1, y1, z1, x1, y1, z0, x1, y0, z0);
-
   //back
   add_polygon(edges, x1, y0, z1, x0, y0, z1, x0, y1, z1);
   add_polygon(edges, x0, y1, z1, x1, y1, z1, x1, y0, z1);
-
   //left
   add_polygon(edges, x0, y0, z1, x0, y0, z0, x0, y1, z0);
   add_polygon(edges, x0, y1, z0, x0, y1, z1, x0, y0, z1);
-
+  //top
+  add_polygon(edges, x0, y0, z0, x0, y0, z1, x1, y0, z0);
+  add_polygon(edges, x0, y0, z1, x1, y0, z1, x1, y0, z0);
   //bottom
   add_polygon(edges, x0, y1, z0, x1, y1, z0, x1, y1, z1);
   add_polygon(edges, x1, y1, z1, x0, y1, z1, x0, y1, z0);
+  
 }
 
 /*======== void add_sphere() ==========
