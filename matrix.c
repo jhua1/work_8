@@ -125,6 +125,7 @@ struct matrix * make_translate(double x, double y, double z) {
   t->m[0][3] = x;
   t->m[1][3] = y;
   t->m[2][3] = z;
+  t->lastcol = 4;
   return t;
 }
 
@@ -141,7 +142,7 @@ struct matrix * make_scale(double x, double y, double z) {
   t->m[0][0] = x;
   t->m[1][1] = y;
   t->m[2][2] = z;
-
+  t->lastcol = 4;
   return t;
 }
 
@@ -154,7 +155,7 @@ angle of rotation and X as the axis of rotation.
 struct matrix * make_rotX(double theta) {
   struct matrix *t = new_matrix(4, 4);
   ident(t);
-
+  t->lastcol = 4;
   t->m[1][1] = cos(theta);
   t->m[1][2] = -1 * sin(theta);
   t->m[2][1] = sin(theta);
@@ -172,7 +173,7 @@ angle of rotation and Y as the axis of rotation.
 struct matrix * make_rotY(double theta) {
   struct matrix *t = new_matrix(4, 4);
   ident(t);
-  
+  t->lastcol = 4;
   t->m[0][0] = cos(theta);
   t->m[2][0] = -1 * sin(theta);
   t->m[0][2] = sin(theta);
@@ -190,7 +191,7 @@ angle of rotation and Z as the axis of rotation.
 struct matrix * make_rotZ(double theta) {
   struct matrix *t = new_matrix(4, 4);
   ident(t);
-  
+  t->lastcol = 4;
   t->m[0][0] = cos(theta);
   t->m[0][1] = -1 * sin(theta);
   t->m[1][0] = sin(theta);
